@@ -1,4 +1,8 @@
+![banner](docs/img/banner.png)
+
 # GitDocA
+<img src="https://img.shields.io/badge/License-MIT-%23207de5.svg"> <img src="https://img.shields.io/badge/Made%20in-Hong%20Kong-orange.svg">
+
 A Simple Github docs/ rendering script using Markdown
 
 ## Demo

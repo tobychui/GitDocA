@@ -1,9 +1,11 @@
-# ArOZ Online Documentation Rendering Interface
-This is the documentation rendering script for ArOZ Online Documentation System.
-The json files follow the following structure
+# GitDocA
+This is a spin-off project from ArOZ Online Documentation System which powers the ArOZ Online Documentation.
+The markdown files follow the following structure
 
 ## How it works
 It works by passing the lanauge into the html file as hash and ask the script to search all the JSON files which contain the content of the documentation in the respective directories.
+
+You don't need to rebuild the index everytime you add a new page. The script will scan all the docs from 0.md to (infinte).md for you.
 
 ## Structure
 The first line is the meta tag in JSON string format and the rest of the document is in markdown format.
