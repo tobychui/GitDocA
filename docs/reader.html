@@ -186,7 +186,7 @@ function loadAllDocs(){
 		url: baseFolder + searchingPage + ".md",
 		success: function(data, textStatus, XMLHttpRequest){
 			//Try handle JSON based response code
-			if (data.error !== undefined || data.success !== undefined){
+			if (data.error !== undefined || (data.success !== undefined && data.success == false)){
 				//Error. Start reading anyway
 				readDoc(); //Start rendering
 				parseDocList(); //Update the doc list
