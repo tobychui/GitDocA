@@ -1,36 +1,36 @@
 <html>
 <head>
-<meta charset="utf-8"> 
-<title>GitDocA</title>
-<!-- Tocas UI：CSS 與元件 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.css">
-<!-- Tocas JS：模塊與 JavaScript 函式 -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.js"></script>
-
-<script src="showdown.min.js"></script>
+	<meta charset="utf-8"> 
+	<title>GitDocA</title>
+	<!-- Tocas UI：CSS 與元件 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.css">
+	<!-- Tocas JS：模塊與 JavaScript 函式 -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.js"></script>
+	<link rel="icon" href="favicon.png" type="image/png"> 
+	<script src="showdown.min.js"></script>
 <style>
-.specialpadding{
-	margin-top:0px !important;
-	padding-left:20px;
-}
-.rightPadded{
-	position:absolute !important;
-	right:10px;
-	width:55px;
-}
-img{
-	max-width:100%;
-}
-.selectable{
-	cursor:pointer;
-	padding:5px;
-	padding-left:10px !important;
-	margin:0px !important;
-}
-.selectable:hover{
-	background-color:#f2f2f2;
-}
+	.specialpadding{
+		margin-top:0px !important;
+		padding-left:20px;
+	}
+	.rightPadded{
+		position:absolute !important;
+		right:10px;
+		width:55px;
+	}
+	img{
+		max-width:100%;
+	}
+	.selectable{
+		cursor:pointer;
+		padding:5px;
+		padding-left:10px !important;
+		margin:0px !important;
+	}
+	.selectable:hover{
+		background-color:#f2f2f2;
+	}
 </style>
 </head>
 <body>
@@ -67,7 +67,7 @@ img{
 <div id="docLoader" class="ts segment">
 </div>
 <div class="ts segment">
-GitDocA v1.0
+GitDocA v1.1
 </div>
 <br><br><br><br>
 </div>
@@ -82,7 +82,7 @@ var baseFolder = "lang/" + lang + "/";
 var sidebarMode = "index"; //Either index or stars
 var staredPages = [];
 initLoad();
-$("#lang").text("Language: " + lang);
+$("#lang").text("Title: " + lang);
 //Check if there are stared pages. If yes, load them
 if (localStorage.getItem(lang) !== null) {
 	staredPages = JSON.parse(localStorage.getItem(lang));
@@ -185,11 +185,28 @@ function loadAllDocs(){
 		timeout: 5000,
 		url: baseFolder + searchingPage + ".md",
 		success: function(data, textStatus, XMLHttpRequest){
-			data = data.split("\r\n").join("\n");
-			docs.push(data.split("\n"));
-			//console.log(data.split("\n"));
-			searchingPage++;
-			loadAllDocs();
+			//Try handle JSON based response code
+			if (data.error !== undefined || data.success !== undefined){
+				//Error. Start reading anyway
+				readDoc(); //Start rendering
+				parseDocList(); //Update the doc list
+				renderDocsList(); //Render the documentation list
+			}else{
+				//Standard handler. Start the data parsing process
+				try{
+					data = data.split("\r\n").join("\n");
+					docs.push(data.split("\n"));
+					//console.log(data.split("\n"));
+					searchingPage++;
+					loadAllDocs();
+				}catch(ex){
+					//Handle Chongquing issues
+					readDoc(); //Start rendering
+					parseDocList(); //Update the doc list
+					renderDocsList(); //Render the documentation list
+				}
+			}
+			
 		},
 		error:function (xhr, ajaxOptions, thrownError){
 			//End of documentation
